@@ -30,7 +30,7 @@ export class CarsService {
             }
         })
     }
-    async updateCar(carId: number,updateCarDto: CreateCarDto){
+    async updateCar(carId: number,updateCarDto: UpdateCarDto){
         const car = await this.carModel.findByPk<Car>(carId);
         if (!car) {
             throw new HttpException('User not found.', HttpStatus.NOT_FOUND);

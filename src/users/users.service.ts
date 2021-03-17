@@ -37,6 +37,7 @@ export class UsersService {
         user.email= createUserDto.email;
         user.gender=createUserDto.gender;
         user.birthday = createUserDto.birthday;
+        user.password = createUserDto.password;
         
         return  user.save();
     }
@@ -59,11 +60,12 @@ export class UsersService {
             throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
         }
 
-        user.firstName = user.firstName;
-        user.lastName = user.lastName;
-        user.email= user.email;
-        user.gender=user.gender;
-        user.birthday = user.birthday;
+        user.firstName = updateUserDto.firstName || user.firstName;
+        user.lastName = updateUserDto.lastName|| user.lastName;
+        user.email= updateUserDto.email || user.email;
+        user.gender= updateUserDto.gender || user.gender;
+        user.birthday = updateUserDto.birthday || user.birthday;
+        user.password = updateUserDto.password || user.password;
         
         try {
             const data = await user.save();

@@ -23,7 +23,7 @@ export class UsersController{
         return this.usersService.findOne(id);
     }
     @Patch(':id')
-    updateCar(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.usersService.updateUser(id, updateUserDto);
     }
 
