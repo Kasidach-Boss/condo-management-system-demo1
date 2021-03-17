@@ -10,22 +10,22 @@ import { Gender } from '../../shared/enum/gender';
 
 export class UserDto{
     
-    @IsString()
+    // @IsString()
     firstName: string;
-    @IsString()
+    // @IsString()
     lastName: string;
 
-    @IsEmail()
+    // @IsEmail()
     email:string;
 
   
     @IsEnum(Gender)
     gender: Gender;
 
-    @IsString()
+    // @IsString()
     password: string;
 
-    @IsString()
+    // @IsString()
     birthday: string;
 
     

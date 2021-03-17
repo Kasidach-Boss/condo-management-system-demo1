@@ -42,6 +42,7 @@ export class UsersService {
     }
 
     async findAll(): Promise<User[]> {
+        console.log('xxx')
         return this.userModel.findAll({ include: [Car] });
     }
 

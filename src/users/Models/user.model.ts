@@ -1,7 +1,8 @@
 
-import { Column, Table, Model,BelongsTo, AutoIncrement, Unique, DataType } from 'sequelize-typescript';
+import { Column, Table, Model, BelongsTo, AutoIncrement, Unique, DataType, HasMany } from 'sequelize-typescript';
 import { Gender } from '../../shared/enum/gender';
 import { IsString } from 'class-validator';
+import { Car } from '../../cars/Models/car.model';
 
 
 
@@ -12,11 +13,11 @@ export class User extends Model {
   @Column
   lastName: string;
 
-  
-  @Column
-  email:string;
 
-  @Column({type: DataType.ENUM(Gender.female,Gender.male)})
+  @Column
+  email: string;
+
+  @Column({ type: DataType.ENUM(Gender.female, Gender.male) })
   gender: Gender;
 
   @IsString()
@@ -29,5 +30,8 @@ export class User extends Model {
 
   @Column({ defaultValue: true })
   isActive: boolean;
-  
+
+
+  @HasMany(() => Car)
+  cars: Car[];
 }
