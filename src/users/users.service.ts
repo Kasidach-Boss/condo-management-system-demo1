@@ -43,20 +43,25 @@ export class UsersService {
     }
 
     async findAll(): Promise<User[]> {
-        console.log('xxx')
+        
+        
         return this.userModel.findAll({ include: [Car] });
     }
 
-    findOne(id: string): Promise<User> {
+    async findOne(id: string): Promise<User> {
+        const user = await this.userModel.findByPk<User>(id);
+        if (user == null) {
+            throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+        }
         return this.userModel.findOne({
             where: {
-                id,
+                id, 
             }
         })
     }
     async updateUser(id: string,updateUserDto: UpdateUserDto){
         const user = await this.userModel.findByPk<User>(id);
-        if (!user) {
+        if (user == null) {
             throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
         }
 

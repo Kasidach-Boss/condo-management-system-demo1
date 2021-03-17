@@ -13,7 +13,7 @@ export class CarsController {
     @Post('/')
     async createCar(@Body() craeteCarDto: CreateCarDto, @Res() res) {
         await this.carsService.createCar(craeteCarDto);
-        return res.status(HttpStatus.OK).json({ message: 'Success' })
+        return res.status(HttpStatus.OK).json({ message: 'Car has been created.' })
     }
 
     @Get('/')

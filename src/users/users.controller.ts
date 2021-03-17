@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Patch} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch, Res, HttpStatus } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { User } from './Models/user.model';
@@ -8,13 +8,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersController{
     constructor(private readonly usersService:UsersService){}
 
-    @Post()
-    create(@Body() createUserDto:CreateUserDto): Promise<User> {
-        return this.usersService.createUser(createUserDto);
+    @Post('/')
+    async create(@Body() createUserDto:CreateUserDto ,@Res() res): Promise<User> {
+        await this.usersService.createUser(createUserDto);
+        return res.status(HttpStatus.OK).json({message:'User has been created.'});
     }
 
     @Get()
-    findAll(): Promise<User[]>{
+    async findAll(): Promise<User[]>{
+        
         return this.usersService.findAll();
     }
 
@@ -29,7 +31,8 @@ export class UsersController{
 
 
     @Delete(':id')
-    remove(@Param('id') id:string){
-        return this.usersService.remove(id);
+    async remove(@Res() res,@Param('id') id:string){
+        await this.usersService.remove(id);
+        return res.status(HttpStatus.OK).json({message:'The User has been removed.'})
     }
 }

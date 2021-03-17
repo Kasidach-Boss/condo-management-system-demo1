@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Res } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Car } from './Models/car.model';
 import { User } from '../users/Models/user.model';
@@ -23,11 +23,14 @@ export class CarsService {
         return this.carModel.findAll({ include: [User] })
     }
     
-    getCar(carId: number): Promise<Car> {
-        return this.carModel.findOne({
-            where: {
-                carId,
-            }
+    async getCar(carId: number): Promise<Car> {
+        const car = await this.carModel.findByPk<Car>(carId);
+        if(car == null){
+            throw new HttpException('Car with given id not found.',HttpStatus.NOT_FOUND);
+        }
+        return this.carModel.findOne( {
+            where: {carId,} , 
+            // include:[Car] // it does not working
         })
     }
     async updateCar(carId: number,updateCarDto: UpdateCarDto){
