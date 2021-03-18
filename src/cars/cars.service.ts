@@ -16,7 +16,12 @@ export class CarsService {
 
     createCar(createCarDto: CreateCarDto): Promise<Car> {
         
-        return this.carModel.create(createCarDto);
+        
+        try {
+            return this.carModel.create(createCarDto);
+        } catch (err) {
+            throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     getCars() {
@@ -26,17 +31,24 @@ export class CarsService {
     async getCar(carId: number): Promise<Car> {
         const car = await this.carModel.findByPk<Car>(carId);
         if(car == null){
-            throw new HttpException('Car with given id not found.',HttpStatus.NOT_FOUND);
+            throw new HttpException('Car id:'+ carId + ' not found.',HttpStatus.NOT_FOUND);
         }
-        return this.carModel.findOne( {
-            where: {carId,} , 
-            // include:[Car] // it does not working
-        })
+        
+        try {
+            return this.carModel.findOne( {
+            
+                where: {carId} , 
+                include:[User],
+                 
+            })
+        } catch (err) {
+            throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async updateCar(carId: number,updateCarDto: UpdateCarDto){
         const car = await this.carModel.findByPk<Car>(carId);
         if (!car) {
-            throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+            throw new HttpException('Car id:'+ carId+' not found.', HttpStatus.NOT_FOUND);
         }
 
         car.brand = updateCarDto.brand || car.brand;
@@ -54,8 +66,16 @@ export class CarsService {
     }
        
     async remove(carId:number):Promise<void>{
-        const car = await this.getCar(carId);
-        await car.destroy();
+         const car = await this.getCar(carId);
+        if (!car) {
+            throw new HttpException('Car id:'+carId+' not found.', HttpStatus.NOT_FOUND);
+        }
+        
+        try {
+            await car.destroy();
+        } catch (err) {
+            throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         
     }
 

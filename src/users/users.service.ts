@@ -14,22 +14,7 @@ export class UsersService {
         @InjectModel(User)
         private readonly userModel: typeof User,
     ) { }
-    // create(createUserDto: CreateUserDto): Promise<User> {
-    //     // const user = new User();
-        
-    //     // // let birthday = moment(createUserDto.birthday);
-    //     // // let newDate = new Date(dateString);
-    //     // // const salt = genSalt(15);
-    //     // user.firstName = createUserDto.firstName;
-    //     // user.lastName = createUserDto.lastName;
-    //     // user.email = createUserDto.email;
-    //     // // user.birthday = birthday.toDate();
-    //     // user.birthday = createUserDto.birthday;
-    //     // user.gender = createUserDto.gender;
-    //     // user.password = createUserDto.password;
-
-    //     return this.userModel.create(createUserDto);
-    // }
+    
     createUser(createUserDto: CreateUserDto): Promise<User> {
         const user = new User();
         user.firstName = createUserDto.firstName;
@@ -39,30 +24,42 @@ export class UsersService {
         user.birthday = createUserDto.birthday;
         user.password = createUserDto.password;
         
-        return  user.save();
+        try {
+            return  user.save();
+        } catch (err) {
+            throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     async findAll(): Promise<User[]> {
         
+        try {
+            return this.userModel.findAll({ include: [Car] });
+       } catch (err) {
+           throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+       }
         
-        return this.userModel.findAll({ include: [Car] });
     }
 
     async findOne(id: string): Promise<User> {
         const user = await this.userModel.findByPk<User>(id);
         if (user == null) {
-            throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+            throw new HttpException('User id:'+id+' not found.', HttpStatus.NOT_FOUND);
         }
-        return this.userModel.findOne({
-            where: {
-                id, 
-            }
-        })
+        
+        try {
+            return this.userModel.findOne({
+                include:[Car],
+                where: { id,}
+            })
+        } catch (err) {
+            throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async updateUser(id: string,updateUserDto: UpdateUserDto){
         const user = await this.userModel.findByPk<User>(id);
         if (user == null) {
-            throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+            throw new HttpException('User id:'+id+' not found.', HttpStatus.NOT_FOUND);
         }
 
         user.firstName = updateUserDto.firstName || user.firstName;
@@ -83,6 +80,15 @@ export class UsersService {
     }
     async remove(id: string): Promise<void> {
         const user = await this.findOne(id);
-        await user.destroy();
+       
+        if (user == null) {
+            throw new HttpException('User id:'+id+' not found.', HttpStatus.NOT_FOUND);
+        }
+        
+        try {
+             await user.destroy();
+        } catch (err) {
+            throw new HttpException(err, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
