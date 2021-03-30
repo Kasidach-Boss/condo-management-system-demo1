@@ -22,6 +22,8 @@ export class UserDto{
     @IsEnum(Gender)
     gender: Gender;
 
+    
+    username: string;
     // @IsString()
     password: string;
 
@@ -35,6 +37,7 @@ export class UserDto{
         this.lastName = user.lastName;
         this.email= user.email;
         this.gender=user.gender;
+        this.username = user.username;
         this.password=user.password;
         this.birthday = user.birthday;
     

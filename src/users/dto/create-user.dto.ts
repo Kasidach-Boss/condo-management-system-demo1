@@ -9,16 +9,19 @@ import {
 export class CreateUserDto{
     @IsString()
     firstName: string;
+
     @IsString()
     lastName: string;
 
     @IsEmail()
     email:string;
-
-    
+        
     @IsEnum(Gender)
     gender: Gender;
 
+    @IsString()
+    username: string;
+    
     @IsString()
     password: string;
 

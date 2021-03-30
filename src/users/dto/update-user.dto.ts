@@ -10,6 +10,7 @@ export class UpdateUserDto{
     
     @IsString()
     firstName: string;
+    
     @IsString()
     lastName: string;
 
@@ -19,6 +20,9 @@ export class UpdateUserDto{
     @IsEnum(Gender)
     gender: Gender;
 
+    @IsString()
+    username: string;
+    
     @IsString()
     password: string;
 

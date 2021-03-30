@@ -5,6 +5,7 @@ import { User } from '../users/Models/user.model';
 import {CreateCarDto} from '../cars/dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { CarDto } from './dto/car.dto';
+import { Sticker } from '../stickers/Models/sticker.model';
 
 
 
@@ -25,7 +26,7 @@ export class CarsService {
     }
 
     getCars() {
-        return this.carModel.findAll({ include: [User] })
+        return this.carModel.findAll({ include: [User,Sticker]})
     }
     
     async getCar(carId: number): Promise<Car> {
@@ -54,6 +55,8 @@ export class CarsService {
         car.brand = updateCarDto.brand || car.brand;
         car.model = updateCarDto.model || car.model;
         car.userId = updateCarDto.userId || car.userId;
+        car.carplate = updateCarDto.carplate || car.carplate;
+        car.color = updateCarDto.color||car.color;
         
         try {
             const data = await car.save();

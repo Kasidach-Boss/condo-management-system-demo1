@@ -10,20 +10,25 @@ import { Car } from '../../cars/Models/car.model';
 export class User extends Model {
   @Column
   firstName: string;
+
   @Column
   lastName: string;
-
 
   @Column
   email: string;
 
-  @Column({ type: DataType.ENUM(Gender.female, Gender.male) })
-  gender: Gender;
+  @Column
+  username: string;
 
   @IsString()
   @Column
   password: string;
 
+
+  @Column({ type: DataType.ENUM(Gender.female, Gender.male) })
+  gender: Gender;
+
+  
   @IsString()
   @Column
   birthday: string;

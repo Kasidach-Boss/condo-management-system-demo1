@@ -1,5 +1,6 @@
-import { Column, Table, Model, BelongsTo, Scopes, CreatedAt, UpdatedAt, Default, PrimaryKey, ForeignKey, AutoIncrement } from 'sequelize-typescript';
+import { Column, Table, Model, BelongsTo, Scopes, CreatedAt, UpdatedAt, Default, PrimaryKey, ForeignKey, AutoIncrement, HasOne } from 'sequelize-typescript';
 import { User } from '../../users/Models/user.model';
+import { Sticker } from '../../stickers/Models/sticker.model';
 
 @Table
 export class Car extends Model {
@@ -16,6 +17,12 @@ export class Car extends Model {
     @Column
     model: string;
 
+    @Column
+    carplate: string;
+
+    @Column
+    color: string;
+
     @ForeignKey(() => User)
     @Column
     userId: number;
@@ -30,4 +37,7 @@ export class Car extends Model {
     @UpdatedAt
     @Column
     updatedAt!: Date;
+
+    // @HasOne(()=>Sticker)
+    // sticker: Sticker;
 }

@@ -22,6 +22,7 @@ export class UsersService {
         user.email= createUserDto.email;
         user.gender=createUserDto.gender;
         user.birthday = createUserDto.birthday;
+        user.username = createUserDto.username;
         user.password = createUserDto.password;
         
         try {
@@ -67,6 +68,7 @@ export class UsersService {
         user.email= updateUserDto.email || user.email;
         user.gender= updateUserDto.gender || user.gender;
         user.birthday = updateUserDto.birthday || user.birthday;
+        user.username = updateUserDto.username || user.username;
         user.password = updateUserDto.password || user.password;
         
         try {
